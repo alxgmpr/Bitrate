@@ -3,5 +3,13 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "^4.16.3"
+  },
+  "scripts": {
+    "restart": "pm2 startOrRestart ecosystem.config.js",
+    "deploy": "pm2 deploy ecosystem.config.js production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "pm2": "^2.10.2"
   }
 }
