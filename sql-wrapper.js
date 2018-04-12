@@ -1,13 +1,13 @@
 var mysql = require('mysql');
-var groupBy = require('group-by');
 
 var pool  = mysql.createPool({
     connectionLimit : 10,
-    host            : 'localhost',
+    host            : 'ec2-54-91-150-70.compute-1.amazonaws.com',
     user            : 'root',
     password        : 'bitrate',
     database        : 'bitrate'
 });
+
 
 /**
  * Returns all coins that are being tracked
@@ -17,7 +17,7 @@ var pool  = mysql.createPool({
  * @returns
  *  [
  *      RowDataPacket {
- *          currency_id: {String},
+ *          id: {String},
  *          name: {String},
  *      },
  *      RowDataPacket {
@@ -72,6 +72,10 @@ function getAllDataBetween(startDate, endDate, callback) {
     pool.query(query, [startDate, endDate], function (err, results){
         callback(err, results);
     });
+}
+
+function createDayIndex(currency, date, price, google_searches, twitter_mentions){
+
 }
 
 function isValidDate(date) {

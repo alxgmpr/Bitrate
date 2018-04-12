@@ -2,7 +2,8 @@
   "name": "Bitrate",
   "version": "0.0.1",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mysql": "^2.15.0"
   },
   "scripts": {
     "restart": "pm2 startOrRestart ecosystem.config.js",
