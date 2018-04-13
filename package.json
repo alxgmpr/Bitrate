@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "^4.16.3",
-    "mysql": "^2.15.0"
+    "twit": "^2.2.9"
   },
   "scripts": {
     "restart": "pm2 startOrRestart ecosystem.config.js",
