@@ -16,9 +16,11 @@ var ripple = 0;
 
 function retrieveData() {
 //Bitcoin
-    T.get('search/tweets', {q: '#BTC', count: 5}, function (err, data, response) {
-        console.log(data);
-        bitcoin = JSON.parse(data);
+    T.get('search/tweets', {q: '#BTC', count: 36}, function (err, data, response) {
+        //console.log(data)
+        for (var x in data.statuses){
+            bitcoin++;
+        }
         console.log("Bitcoin logger: " + bitcoin);
     })
 
@@ -43,16 +45,40 @@ function retrieveData() {
     })*/
 }
 
-//retrieveData();
+retrieveData();
 
 function testFunc() {
-    var myObject = {'name':'Kasun', 'address':'colo', 'age':'29'};
+    var myObject = [ {
+            'name':'Kasun',
+            'address':'colo',
+            'age':'29'
+        },
+        {
+            'name':'Kasun',
+            'address':'colo',
+            'age':'29'
+        },
+        {
+            'name':'Kasun',
+            'address':'colo',
+            'age':'29'
+        },
+        {
+            'name':'Kasun',
+            'address':'colo',
+            'age':'29'
+        },
+        {
+            'name':'Kasun',
+            'address':'colo',
+            'age':'29'
+        } ];
 
     var count = Object.keys(myObject).length;
     console.log(count);
 }
 
-testFunc();
+//testFunc();
 
 function logger() {
     console.log("Bitcoin: " + bitcoin + ", Cardano: " + cardano +
