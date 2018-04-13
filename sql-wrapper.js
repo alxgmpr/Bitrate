@@ -1,3 +1,16 @@
+/**
+ * @typedef {Object} currency
+ * @property {string} id The 3 letter abbreviation of the currency
+ * @property {string} name The name of the currency
+ *
+ * @typedef {object} day_index
+ * @property {string} currency_id The 3 letter abbreviation of the currency
+ * @property {object} date The date object of when the data recording happened
+ * @property {number} price_us_dollars The price in US dollars of the currency during the date of recording
+ * @property {number} google_searches The number of google searches during the date of recording
+ * @property {number} twitter_mentions The number of twitter mentions during the date of recording
+ */
+
 var mysql = require('mysql');
 
 var pool  = mysql.createPool({
@@ -12,20 +25,8 @@ var pool  = mysql.createPool({
 });
 
 /**
- * Returns all coins that are being tracked
- *
- * @param callback {error, object} error if unsuccessful object if successful
- *
- * @returns
- *  [
- *      RowDataPacket {
- *          id: {String},
- *          name: {String},
- *      },
- *      RowDataPacket {
- *          ....
- *      }
- *  ]
+ * Get all currencies in the database
+ * @returns {Promise.<[currency]>} Array of currencies
  */
 function getAllCurrencies() {
     return new Promise(function(resolve, reject) {
@@ -41,26 +42,10 @@ function getAllCurrencies() {
 }
 
 /**
- * Returns all coin data between two dates
- *
- * @param startDate {Date} start of period
- * @param endDate {Date} end of period
- * @param callback {error, object} error if unsuccessful object if successful
- *
- * @returns
- *  [
- *      RowDataPacket {
- *          currency_id: {String},
- *          name: {String},
- *          date: {Date},
- *          price_us_dollars: {Number},
- *          number_of_searches : {Number},
- *          number_of_mentions : {Number}
- *      },
- *      RowDataPacket {
- *          ....
- *      }
- *  ]
+ * Gets all coin data between two dates
+ * @param startDate {Date} Start of period
+ * @param endDate {Date} End of period
+ * @returns {Promise.<[day_index]>} Array of day_indexes
  */
 function getAllDataBetweenfunction(startDate, endDate) {
     return new Promise(function(resolve, reject){
@@ -69,10 +54,9 @@ function getAllDataBetweenfunction(startDate, endDate) {
 
         var query = {
             sql:
-            'SELECT currency_id, name, DATE_FORMAT(date, \'%m-%d-%Y\') as date, price_us_dollars, ' +
+            'SELECT currency_id, DATE_FORMAT(date, \'%m-%d-%Y\') as date, price_us_dollars, ' +
                 'google_searches, twitter_mentions ' +
-            'FROM day_index INNER JOIN ' +
-            'currency ON day_index.currency_id = currency.id' +
+            'FROM day_index ' +
             'WHERE date >= ? ' +
             'AND date <= ?'
         };
@@ -86,6 +70,11 @@ function getAllDataBetweenfunction(startDate, endDate) {
     });
 }
 
+/**
+ * Gets a currency object from a currency_id
+ * @param currency_id The currency_id of the desired currency
+ * @returns {Promise.<currency>} The desired currency, null if not found
+ */
 function getCurrency(currency_id) {
     return new Promise(function(resolve, reject){
         verifyCurrencyId(currency_id);
@@ -100,7 +89,7 @@ function getCurrency(currency_id) {
         pool.query(query, [currency_id], function (err, currency){
             if(err)
                 reject(err);
-            else if (currency.length != 1)
+            else if (currency.length !== 1)
                 resolve(null);
             else
                 resolve(currency[0]);
@@ -108,6 +97,12 @@ function getCurrency(currency_id) {
     });
 }
 
+/**
+ * Gets day_index object from a currency_id and date
+ * @param currency_id The currency_id of the desired currency
+ * @param date The date the data was recorded on
+ * @returns {Promise.<day_index>} The day_index of the currency, null if not found
+ */
 function getDayIndex(currency_id, date) {
     return new Promise(function(resolve, reject) {
         verifyCurrencyId(currency_id);
@@ -124,7 +119,7 @@ function getDayIndex(currency_id, date) {
         pool.query(query, [currency_id, date], function (err, results) {
             if (err)
                 reject(err);
-            else if (results.length != 1)
+            else if (results.length !== 1)
                 resolve(null);
             else
                 resolve(results[0]);
@@ -132,11 +127,20 @@ function getDayIndex(currency_id, date) {
     });
 }
 
-function createDayIndex(currency_id, date, price, google_searches, twitter_mentions){
+/**
+ * Creates day index from existing data
+ * @param currency_id The currency_id of the desired currency
+ * @param date The date the data was recorded
+ * @param price_us_dollars The price in US dollars of the currency on the given date
+ * @param google_searches The number of google searches of the currency on the given date
+ * @param twitter_mentions The number of mentions on twitter of the currency on the given date
+ * @returns {Promise.<int>} 1 if successful
+ */
+function createDayIndex(currency_id, date, price_us_dollars, google_searches, twitter_mentions){
     return new Promise(function(resolve, reject) {
         verifyCurrencyId(currency_id);
         verifyDate(date);
-        verifyNumber(price,'price');
+        verifyNumber(price_us_dollars,'price_use_dollars');
         verifyNumber(google_searches, 'google_searches');
         verifyNumber(twitter_mentions, 'twitter_mentions');
 
@@ -146,7 +150,7 @@ function createDayIndex(currency_id, date, price, google_searches, twitter_menti
             'Values (?, ?, ?, ?, ?)'
         };
 
-        pool.query(query, [currency_id, date, price, google_searches, twitter_mentions], function (err, results) {
+        pool.query(query, [currency_id, date, price_us_dollars, google_searches, twitter_mentions], function (err, results) {
             if (err)
                 reject(err);
             else
@@ -155,11 +159,20 @@ function createDayIndex(currency_id, date, price, google_searches, twitter_menti
     });
 }
 
-function updateDayIndex(currency_id, date, price, google_searches, twitter_mentions){
+/**
+ * Updates day index with new data
+ * @param currency_id The currency_id of the existing day index
+ * @param date The date the data was recorded
+ * @param price_us_dollars The price in US dollars of the currency on the given date
+ * @param google_searches The number of google searches of the currency on the given date
+ * @param twitter_mentions The number of mentions on twitter of the currency on the given date
+ * @returns {Promise.<int>} 1 if successful
+ */
+function updateDayIndex(currency_id, date, price_us_dollars, google_searches, twitter_mentions){
     return new Promise(function(resolve, reject) {
         verifyCurrencyId(currency_id);
         verifyDate(date);
-        verifyNumber(price,'price');
+        verifyNumber(price_us_dollars,'price_us_dollars');
         verifyNumber(google_searches, 'google_searches');
         verifyNumber(twitter_mentions, 'twitter_mentions');
 
@@ -170,7 +183,7 @@ function updateDayIndex(currency_id, date, price, google_searches, twitter_menti
             'WHERE currency_id = ? AND date = ?'
         };
 
-        pool.query(query, [price, google_searches, twitter_mentions, currency_id, date], function (err, results) {
+        pool.query(query, [price_us_dollars, google_searches, twitter_mentions, currency_id, date], function (err, results) {
             if (err)
                 reject(err);
             else
@@ -179,11 +192,20 @@ function updateDayIndex(currency_id, date, price, google_searches, twitter_menti
     });
 }
 
-function updateData(currency_id, date, price, google_searches, twitter_mentions){
+/**
+ * Updates data in database, insuring integrity of data
+ * @param currency_id The currency_id of the desired currency
+ * @param date The date the data was recorded
+ * @param price_us_dollars The price in US dollars of the currency on the given date
+ * @param google_searches The number of google searches of the currency on the given date
+ * @param twitter_mentions The number of mentions on twitter of the currency on the given date
+ * @returns {Promise.<int>} 1 if successful
+ */
+function updateData(currency_id, date, price_us_dollars, google_searches, twitter_mentions){
     return new Promise(function(resolve, reject) {
         verifyCurrencyId(currency_id);
         verifyDate(date);
-        verifyNumber(price,'price');
+        verifyNumber(price_us_dollars,'price_us_dollars');
         verifyNumber(google_searches, 'google_searches');
         verifyNumber(twitter_mentions, 'twitter_mentions');
 
@@ -199,11 +221,11 @@ function updateData(currency_id, date, price, google_searches, twitter_mentions)
                 function(day_index){
                     if(day_index == null){
                         console.log('day index not found creating it');
-                        return createDayIndex(currency_id, date, price, google_searches, twitter_mentions);
+                        return createDayIndex(currency_id, date, price_us_dollars, google_searches, twitter_mentions);
                     }
                     else{
                         console.log('day index found, updating it');
-                        return updateDayIndex(currency_id, date, price, google_searches, twitter_mentions);
+                        return updateDayIndex(currency_id, date, price_us_dollars, google_searches, twitter_mentions);
                     }
                 }
             )
@@ -216,15 +238,23 @@ function updateData(currency_id, date, price, google_searches, twitter_mentions)
     });
 }
 
+/**
+ * Verifies that the currency_id parameter is correct data type
+ * @param currency_id The currency_id user input
+ */
 function verifyCurrencyId(currency_id) {
     if(currency_id == null)
         throw 'Parameter currency_id cannot be null';
-    if(typeof currency_id != 'string')
+    if(typeof currency_id !== 'string')
         throw 'Parameter currency_id must be a string';
-    else if(currency_id.length != 3)
+    else if(currency_id.length !== 3)
         throw 'Parameter currency_id must be of length 3';
 }
 
+/**
+ * Verifies that the date parameter is correct data type
+ * @param date date user input
+ */
 function verifyDate(date){
     if(date == null)
         throw 'Parameter date cannot be null';
@@ -234,7 +264,12 @@ function verifyDate(date){
         date.setHours(0,0,0,0);
 }
 
+/**
+ * Verifies that the number parameter is correct data type
+ * @param number The user input
+ * @param parameter The type of parameter the number is (for error logging)
+ */
 function verifyNumber(number, parameter){
-    if(number != null && typeof number != 'number')
+    if(number != null && typeof number !== 'number')
         throw 'Parameter ' + parameter + ' must be a number';
 }

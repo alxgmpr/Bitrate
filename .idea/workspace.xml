@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9849a2d8-a9ee-406b-973f-21634f1076ce" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sql-wrapper.js" beforeDir="false" afterPath="$PROJECT_DIR$/sql-wrapper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -22,8 +20,8 @@
       <file leaf-file-name="sql-wrapper.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sql-wrapper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="4050">
+              <caret line="270" column="3" lean-forward="true" selection-start-line="270" selection-start-column="3" selection-end-line="270" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -138,7 +136,7 @@
       <option name="presentableId" value="Default" />
       <updated>1523296186924</updated>
       <workItem from="1523296188408" duration="2210000" />
-      <workItem from="1523379851450" duration="18533000" />
+      <workItem from="1523379851450" duration="34408000" />
     </task>
     <task id="LOCAL-00001" summary="Added SQL-Wrapper, this will not work until SQL server is installed on remote server (right now its running on my local machine)">
       <created>1523413930393</created>
@@ -154,11 +152,25 @@
       <option name="project" value="LOCAL" />
       <updated>1523559557767</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Changed SQL connection string to use remote server instead of localhost">
+      <created>1523568578773</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1523568578773</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added data input functionality to sql-wrapper">
+      <created>1523594008686</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1523594008686</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20743000" />
+    <option name="totallyTimeSpent" value="36618000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -192,11 +204,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added SQL-Wrapper, this will not work until SQL server is installed on remote server (right now its running on my local machine)" />
     <MESSAGE value="Added SQL-Wrapper" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added SQL-Wrapper" />
+    <MESSAGE value="Changed SQL connection string to use remote server instead of localhost" />
+    <MESSAGE value="Added data input functionality to sql-wrapper" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added data input functionality to sql-wrapper" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="28" />
+      <option name="time" value="52" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -251,8 +265,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sql-wrapper.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="4050">
+          <caret line="270" column="3" lean-forward="true" selection-start-line="270" selection-start-column="3" selection-end-line="270" selection-end-column="3" />
         </state>
       </provider>
     </entry>
