@@ -16,11 +16,13 @@ var ripple = 0;
 
 function retrieveData() {
 //Bitcoin
-    T.get('search/tweets', {q: '#BTC', count: 36}, function (err, data, response) {
+    T.get('search/tweets', {q: '#BTC', count: 5}, function (err, data, response) {
         //console.log(data)
-        for (var x in data.statuses){
+        console.log(data.statuses.length);
+        bitcoin = data.statuses.length;
+        /*for (var x in data.statuses){
             bitcoin++;
-        }
+        }*/
         console.log("Bitcoin logger: " + bitcoin);
     })
 
