@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "^4.16.3",
-    "twit": "^2.2.9"
+    "twit": "^2.2.9",
+    "google-trends-api": "^4.6.1"
   },
   "scripts": {
     "restart": "pm2 startOrRestart ecosystem.config.js",

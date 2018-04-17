@@ -1,4 +1,5 @@
-var Twit = require('twit')
+var Twit = require('twit');
+var Google = require('google-trends-api');
 
 var T = new Twit({
     consumer_key:         'RbKtORPOdZPlPWuVVz7ByHXam',
@@ -8,7 +9,10 @@ var T = new Twit({
     timeout_ms:           60*1000  // optional HTTP request timeout to apply to all requests.
 });
 
-printTwitterData();
+
+
+//printTwitterData();
+queryGoogle("Bitcoin", new Date());
 
 function queryTwitter(hashtag){
     return new Promise(function(resolve, reject){
@@ -19,6 +23,33 @@ function queryTwitter(hashtag){
                 resolve(data.statuses.length);
             }
         })
+    });
+}
+
+function queryGoogle(coinName, date){
+    return new Promise(function(resolve, reject){
+
+        var startTime = new Date(date.setHours(0,0,0,0));
+        var endTime = new Date(date.setHours(23,59,59,999));
+
+       Google.interestOverTime({keyword: coinName, startTime: startTime, endTime: endTime, granularTimeResolution: true},
+           function(err, data){
+               if(err)
+                   reject(err);
+               else{
+                   var object = JSON.parse(data);
+                   var timeline = object.default.timelineData;
+                   var average = 0;
+
+                   for(var i in timeline){
+                       average += timeline[i]['value'][0];
+                   }
+
+                   average = Math.round(average/timeline.length);
+
+                   resolve(average);
+               }
+       })
     });
 }
 
