@@ -1,87 +1,154 @@
-var Twit = require('twit');
-var Google = require('google-trends-api');
+const Google = require('google-trends-api');
+const HashtagCount = require('hashtag-count');
+const sql = require('./sql-wrapper.js');
 
-var T = new Twit({
+const CollectionInterval = '24 hours';
+const CollectionHistory = '24 hours';
+const hc = new HashtagCount({
     consumer_key:         'RbKtORPOdZPlPWuVVz7ByHXam',
     consumer_secret:      '4KLCLUQgz2gJMPGe1UMPeNU8qQWVTChht8GMXbmQegPfzLgUg0',
     access_token:         '984568185302208513-B0PBoA8dlKAV6FJKC1q002Asz8RyyI2',
     access_token_secret:  'BFUDFMHhivRZgdrAuiVCzt7Ed5RtttAJvWUsNfnGXQqA6',
-    timeout_ms:           60*1000  // optional HTTP request timeout to apply to all requests.
 });
 
+module.exports.StartStreamCapturing = function(){
+    let hashtags = [];
 
-
-//printTwitterData();
-queryGoogle("Bitcoin", new Date());
-
-function queryTwitter(hashtag){
-    return new Promise(function(resolve, reject){
-        T.get('search/tweets', {q: hashtag, count: 5}, function (err, data) {
-            if(err) {
-                reject(err);
-            }else{
-                resolve(data.statuses.length);
+    sql.GetAllCurrencies()
+        .then(
+            function(result) {
+                currencyIds = result.map(x => x.id);
+                return Promise.resolve(currencyIds);
             }
-        })
-    });
-}
+        ).then(
+        function(currencyIds){
+            hashtags = currencyIds;
+        }
+    ).then(
+        function(){
+            hc.start({
+                hashtags: hashtags,
+                interval: CollectionInterval,
+                history: CollectionHistory,
+                intervalCb: IntervalEvent,
+                connectingCb: ConnectingEvent,
+                reconnectingCb: ReconnectingEvent,
+                connectedCb: ConnectedEvent,
+            });
+        }
+    );
+};
 
-function queryGoogle(coinName, date){
+const IntervalEvent = function(err, results) {
+    if (err) {
+        console.error(err);
+    } else {
+        let currencies = GetLatestResult(results);
+
+        for(let i in currencies){
+            let currency = currencies[i];
+            GetNumberOfGoogleSearches(currency.id)
+                .then(
+                    function(googleSearches){
+                        currency.googleSearches = googleSearches;
+                        return Promise.resolve();
+                    }
+                )
+                .then(
+                    function(){
+                        return GetCoinPrice(currency.id);
+                    }
+                )
+                .then(
+                    function(currencyPrice){
+                        currency.currencyPrice = currencyPrice;
+                        return Promise.resolve();
+                    }
+                )
+                .then(
+                    function(){
+                        return sql.UpdateData(currency.id, currency.date, currency.currencyPrice,
+                            currency.googleSearches, currency.twitterMentions);
+                    }
+                )
+                .catch(
+                    function(err){
+                        console.log("Error updating data. Err: " + err);
+                    }
+                )
+        }
+    }
+};
+
+const GetLatestResult = function(results){
+    let max = null;
+    for(let key in results){
+        if(max == null)
+            max = key;
+        if(key > max)
+            max = key;
+    }
+
+    let resultsArr = [];
+    const date = new Date(max);
+    for(let key in results[max]){
+        resultsArr.push({'id': key, 'date': date, 'twitterMentions': results[max][key]});
+    }
+
+    return resultsArr;
+};
+
+
+const ConnectingEvent = function() {
+    const dateString = new Date().toISOString();
+    console.log(dateString + ' Connecting to Twitter Streaming API...');
+};
+
+const ReconnectingEvent = function() {
+    const dateString = new Date().toISOString();
+    console.log(dateString + ' Twitter Streaming API connection failed. Reconnecting...');
+};
+
+const ConnectedEvent = function() {
+    const dateString = new Date().toISOString();
+    console.log(dateString + ' Connected to Twitter Streaming API.');
+};
+
+const GetNumberOfGoogleSearches = function(currencyName){
     return new Promise(function(resolve, reject){
+        const now = new Date();
+        const oneWeekAgo = new Date(new Date().getTime() - (6 * 24 * 60 * 60 * 1000));
+        const yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
 
-        var startTime = new Date(date.setHours(0,0,0,0));
-        var endTime = new Date(date.setHours(23,59,59,999));
-
-       Google.interestOverTime({keyword: coinName, startTime: startTime, endTime: endTime, granularTimeResolution: true},
+       Google.interestOverTime({keyword: currencyName, startTime: oneWeekAgo, endTime: now, granularTimeResolution: true},
            function(err, data){
                if(err)
                    reject(err);
                else{
-                   var object = JSON.parse(data);
-                   var timeline = object.default.timelineData;
-                   var average = 0;
+                   const object = JSON.parse(data);
+                   const timeline = object.default.timelineData;
+                   let average = 0;
+                   let averageCount = 0;
 
-                   for(var i in timeline){
-                       average += timeline[i]['value'][0];
+                   for(let i in timeline){
+                       const time = parseInt(timeline[i].time);
+                       const value = Math.round(yesterday.getTime() / 1000);
+                       if(time >= value){
+                           average += timeline[i]['value'][0];
+                           averageCount++;
+                       }
                    }
 
-                   average = Math.round(average/timeline.length);
+                   average = Math.round(average/averageCount);
 
                    resolve(average);
                }
        })
     });
-}
+};
 
-function printTwitterData(){
-    queryTwitter('#BTC')
-        .then(
-            function(value){
-                console.log('Bitcoin: ' + value);
-            });
-
-    queryTwitter('#ADA')
-        .then(
-            function(value){
-                console.log('Cardano: ' + value);
-            });
-
-    queryTwitter('#LTC')
-        .then(
-            function(value){
-                console.log('Litecoin: ' + value);
-            });
-
-    queryTwitter('#ETH')
-        .then(
-            function(value){
-                console.log('Ethereum: ' + value);
-            });
-
-    queryTwitter('#XRP')
-        .then(
-            function(value){
-                console.log('Ripple: ' + value);
-            });
-
-}
+const GetCoinPrice = function(currencyId){
+    return new Promise(function(resolve, reject){
+        resolve(100);
+    });
+};
