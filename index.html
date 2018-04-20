@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Bitrate</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="MDBootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="MDBootstrap/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="MDBootstrap/css/style.css" rel="stylesheet">
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!--&lt;!&ndash; Start your project here&ndash;&gt;-->
+<!--<div style="height: 100vh">-->
+<!--<div class="flex-center flex-column">-->
+<!--<h1 class="animated fadeIn mb-4">Material Design for Bootstrap</h1>-->
+
+<!--<h5 class="animated fadeIn mb-3">Thank you for using our product. We're glad you're with us.</h5>-->
+
+<!--<p class="animated fadeIn text-muted">MDB Team</p>-->
+<!--</div>-->
+<!--</div>-->
+<!-- /Start your project here-->
+<div style="width:75%;">
+    <canvas id="myChart"></canvas>
+</div>
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="MDBootstrap/js/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="MDBootstrap/js/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="MDBootstrap/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="MDBootstrap/js/mdb.min.js"></script>
+<script type = "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+<script>
+    var canvas = document.getElementById('myChart');
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May',"June","July","August","September","November","December"],
+            datasets: [{
+                label: 'USD-T',
+                borderColor: 'rgb(38, 12, 12)',
+                // backgroundColor: window.chartColors.red,
+                yAxisID: 'left-axis',
+                fill: false,
+                data: [100, 96, 84, 76, 69],
+            }, {
+                label: '# of Tweets',
+                borderColor: 'rgb(246, 246, 33)',
+                // backgroundColor: window.chartColors.blue,
+                fill: false,
+                yAxisID: 'right-axis',
+                data: [0, 1, 0, 1, 0],
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    scaleLabel:{
+                        display: true,
+                        labelString: "USD-T"
+                    },
+                    id: 'left-axis',
+                    type: 'linear',
+                    position: 'left'
+                }, {
+                    scaleLabel:{
+                        display: true,
+                        labelString: "# of Tweets"
+                    },
+                    id: 'right-axis',
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                        max: 1,
+                        min: 0
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel:{
+                        display: true,
+                        labelString: "Months"
+                    }
+                }]
+            }
+        }
+    });
+</script>
+</body>
+
+</html>
