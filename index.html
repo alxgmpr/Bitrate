@@ -15,6 +15,7 @@
     <link href="MDBootstrap/css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="MDBootstrap/css/style.css" rel="stylesheet">
+    <link href="MDBootstrap/css/homepageStyle.css" rel="stylesheet">
     <style>
         canvas {
             -moz-user-select: none;
@@ -27,21 +28,77 @@
 
 <body>
 
-<!--&lt;!&ndash; Start your project here&ndash;&gt;-->
-<!--<div style="height: 100vh">-->
-<!--<div class="flex-center flex-column">-->
-<!--<h1 class="animated fadeIn mb-4">Material Design for Bootstrap</h1>-->
+<nav class="navbar navbar-expand-lg navbar-dark myBlue">
+    <a class="navbar-brand" href="#">
+        <img src="MDBootstrap/img/luxury.png" height="30" class="d-inline-block align-top" alt="">
+        BitRate</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<!--<h5 class="animated fadeIn mb-3">Thank you for using our product. We're glad you're with us.</h5>-->
-
-<!--<p class="animated fadeIn text-muted">MDB Team</p>-->
-<!--</div>-->
-<!--</div>-->
-<!-- /Start your project here-->
-<div style="width:75%;">
+<div style="width:75%;margin: 0 auto;">
     <canvas id="myChart"></canvas>
 </div>
 
+<div id = "mainBlock">
+    <div class = "newsBlock">
+        <div id = "pad">
+            <h7>WORLDS FASTEST</h7>
+            <h4>Better Than Any Blockchain</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor ac ligula sed dapibus. Donec eget fermentum lorem. Mauris sit amet erat quis lacus placerat blandit ut feugiat purus. Aenean laoreet mauris sapien, non varius est commodo at. Phasellus sit amet varius purus, eget vehicula risus. Aenean ac varius eros. Donec a orci condimentum, imperdiet est eu, rutrum quam. Duis vel mi rutrum, varius diam quis, volutpat enim. Nullam euismod ornare hendrerit. Nunc consectetur commodo arcu, at faucibus enim euismod nec. Donec rutrum vitae massa sed rhoncus.</p>
+            <p>In malesuada diam sem, nec dictum nisi molestie nec. Pellentesque maximus bibendum nunc, ut aliquet erat congue sed. Proin id tincidunt neque. Nam porttitor ipsum ante, eu scelerisque libero sodales vitae. Donec convallis vestibulum dui. Quisque convallis efficitur nisi ut tincidunt. Aenean lobortis eu ipsum ut venenatis.</p>
+        </div>
+        <div id = "imageBlock">
+            <img id = "imageProps" src = "MDBootstrap/img/luxury.png">
+        </div>
+        <div id = "footer">
+            <div id = "footerContentWrapper">
+                <div id = "leftFooter">
+                    <h6>BitRate</h6>
+                    <h7>© BitRate 2018, All Rights Reserved.</h7>
+                </div>
+                <div id = "centerFooter">
+                    <h6>Got questions? Ask us on our channels</h6>
+                    <div id = "icons">
+                        <i class="fa fa-twitter inlineIcons" aria-hidden="true"></i>
+                        <i class="fa fa-facebook inlineIcons" aria-hidden="true"></i>
+                        <i class="fa fa-google-plus inlineIcons" aria-hidden="true"></i>
+                        <i class="fa fa-envelope inlineIcons" aria-hidden="true"></i>
+                        <i class="fa fa-github inlineIcons" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div id = "rightFooter">
+                    <h6>Privacy Policy</h6>
+                    <h7>Terms & Conditions</h7>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id = "newsLetter">
+    <div id = "newsLetterWrapper">
+        <h4>Interested In Weekly Updates? Try Our Newsletter!</h4>
+
+        <div id = "searchSection">
+            <!-- Search form -->
+            <form id = "centerSearch" class="form-inline md-form form-sm active-cyan">
+                <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Email Address" aria-label="Search">
+                <i class="fa fa-envelope-open" aria-hidden="true"></i>
+            </form>
+        </div>
+
+        <h7>New to bitcoin? | What is Ethereum?</h7>
+    </div>
+</div>
 <!-- SCRIPTS -->
 <!-- JQuery -->
 <script type="text/javascript" src="MDBootstrap/js/jquery-3.2.1.min.js"></script>
@@ -69,7 +126,7 @@
                 data: [100, 96, 84, 76, 69],
             }, {
                 label: '# of Tweets',
-                borderColor: 'rgb(246, 246, 33)',
+                borderColor: 'rgb(77, 174, 206)',
                 // backgroundColor: window.chartColors.blue,
                 fill: false,
                 yAxisID: 'right-axis',

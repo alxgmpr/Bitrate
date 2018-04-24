@@ -1,0 +1,142 @@
+#mainBlock {
+    width: 100%;
+    background-color: #4daece;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+
+.newsBlock {
+    width: 85%;
+    background-color: white;
+    min-height: 600px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    margin: 0 auto;
+    background-color: #3887a1;
+    position: relative;
+    color: white;
+}
+
+.newsBlock h7 {
+    font-size: 8pt;
+}
+
+.newsBlock p {
+    font-size: 9pt;
+}
+
+#pad {
+    margin-left: 7%;
+    padding-top: 5%;
+    max-width: 30%;
+    display: inline-block;
+}
+
+#imageBlock {
+    display: inline-block;
+    margin-left: 5%;
+    text-align: center;
+    vertical-align: top;
+    margin-top: 5%;
+}
+
+#imageProps {
+    width: 80%;
+}
+
+.myBlue {
+    background-color: #4daece;
+}
+
+#footer {
+    color: black;
+    background-color: white;
+    width: 100%;
+    min-height: 140px;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+#footerContentWrapper {
+    width: 100%;
+    padding-top: 4%;
+}
+
+#leftFooter {
+    width: 30%;
+    display: inline-block;
+    text-align: left;
+}
+
+#centerFooter {
+    width: 30%;
+    display: inline-block;
+}
+
+#rightFooter {
+    width: 30%;
+    display: inline-block;
+    text-align: right;
+}
+
+#rightFooter h7,h6:hover {
+    cursor: pointer;
+}
+
+#icons {
+    width: 100%;
+}
+
+.inlineIcons {
+    display: inline-block;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.inlineIcons:hover {
+    cursor: pointer;
+}
+
+#newsLetter {
+    background-color: white;
+    width: 100%;
+    min-height: 300px;
+    color: #4daece;
+    text-align: center;
+}
+
+#centerSearch {
+    margin: 0;
+    width: 100%;
+    padding-left: 11%;
+    padding-top: 4%;
+}
+
+#searchSection {
+    width: 40%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#newsLetterWrapper {
+    width: 100%;
+    padding-top: 8%;
+}
+
+#newsLetterWrapper h7 {
+    font-size: 8pt;
+    color: lightgray;
+}
+
+.active-cyan-2 input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow: 0 1px 0 0 #4dd0e1;
+}
+.active-cyan input[type=text] {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow: 0 1px 0 0 #4dd0e1;
+}
+.active-cyan .fa, .active-cyan-2 .fa {
+    color: #4dd0e1;
+}
