@@ -272,9 +272,9 @@ const VerifyDate = function (date){
     if(date == null)
         throw 'Parameter date cannot be null';
     else if(!(date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date)))
-        throw 'Parameter date must be a date object';
-    else
-        date.setHours(0, 0, 0, 0);
+        date = new Date(date)
+
+    date.setHours(0, 0, 0, 0);
 };
 
 /**
