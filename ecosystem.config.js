@@ -2,6 +2,9 @@ module.exports = {
     apps: [{
         name: 'Bitrate',
         script: './index.js'
+    }, {
+        name: 'api-crawler'
+        script:'./api-crawler.js'
     }],
     deploy: {
         production: {
