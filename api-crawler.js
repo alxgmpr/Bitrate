@@ -1,6 +1,7 @@
 const Google = require('google-trends-api');
 const HashtagCount = require('hashtag-count');
 const sql = require('./sql-wrapper.js');
+const request = require('request');
 
 const CollectionInterval = '24 hours';
 const CollectionHistory = '24 hours';
@@ -11,8 +12,7 @@ const hc = new HashtagCount({
     access_token_secret:  'BFUDFMHhivRZgdrAuiVCzt7Ed5RtttAJvWUsNfnGXQqA6',
 });
 
-
-module.exports.StartStreamCapturing = function(){
+StartStreamCapturing = function(){
     let hashtags = [];
 
     sql.GetAllCurrencies()
@@ -150,7 +150,25 @@ const GetNumberOfGoogleSearches = function(currencyName){
 
 const GetCoinPrice = function(currencyId){
     return new Promise(function(resolve, reject){
-
         resolve(100);
+        request({
+            url: 'https://bittrex.com/api/v1.1/public/getticker?market=USDT-' + currencyId,
+            headers: {
+                'content-type': 'application/json'
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode === 200) {
+                if(JSON.parse(body)['success']) {
+                    resolve(JSON.parse(body)['result']['Last'])
+                } else {
+                    reject(JSON.parse(body)['message'])
+                }
+            }
+            if (error) {
+                reject(error)
+            }
+        });
     });
 };
+
+StartStreamCapturing();
