@@ -11,6 +11,7 @@ const hc = new HashtagCount({
     access_token_secret:  'BFUDFMHhivRZgdrAuiVCzt7Ed5RtttAJvWUsNfnGXQqA6',
 });
 
+
 module.exports.StartStreamCapturing = function(){
     let hashtags = [];
 
@@ -149,6 +150,7 @@ const GetNumberOfGoogleSearches = function(currencyName){
 
 const GetCoinPrice = function(currencyId){
     return new Promise(function(resolve, reject){
+
         resolve(100);
     });
 };
