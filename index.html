@@ -16,6 +16,9 @@
     <!-- Your custom styles (optional) -->
     <link href="MDBootstrap/css/style.css" rel="stylesheet">
     <link href="MDBootstrap/css/homepageStyle.css" rel="stylesheet">
+    <link href="datepicker/css/datepicker.css" rel = "stylesheet">
+    <link href="Bootstrap/css/bootstrap.css" rel = "stylesheet">
+
     <style>
         canvas {
             -moz-user-select: none;
@@ -58,6 +61,15 @@
 <div style="width:75%;margin: 0 auto;">
 
     <canvas id="myChart"></canvas>
+</div>
+
+<div id = "dateWrapper">
+    <div class = "dateStart">
+        Start Date: <input class = "datepicker" type = "text" name = "date">
+    </div>
+    <!--<div class = "dateEnd">
+        End Date: <input class = "datepicker" type = "text" name = "date">
+    </div>-->
 </div>
 
 <div id = "mainBlock">
@@ -121,16 +133,22 @@
 <script type="text/javascript" src="MDBootstrap/js/mdb.min.js"></script>
 <script type = "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-
+<script type="text/javascript" src="Bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.js"></script>
 <script>
 
 
 
     $( document ).ready(function() {
         getCoinValue();
-        getDate();
     });
 
+    $(function() {
+        console.log("HERE");
+        $(".datepicker").datepicker();
+        //console.log($(".datepicker").datepicker("getDate"));
+
+    });
 
     function getCoinValue()
     {
@@ -139,7 +157,7 @@
         console.log(coin);
         createChart(coin);
     }
-    function getDate(){
+    function getDateValue(){
         var date = new Date();
         var day = date.getDate();
         var month = date.getMonth()
@@ -162,7 +180,7 @@
         new Chart(canvas, {
             type: 'line',
             data: {
-                labels: getDate(),
+                labels: getDateValue(),
                 datasets: [{
                     label: 'USDT',
                     borderColor: 'rgb(38, 12, 12)',

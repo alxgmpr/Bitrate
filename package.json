@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "^4.16.3",
-    "mysql": "^2.15.0",
     "google-trends-api": "^4.6.1",
-    "hashtag-count": "^1.1.0"
+    "hashtag-count": "^1.1.0",
+    "jquery": "^3.3.1",
+    "mysql": "^2.15.0",
+    "npm": "^6.0.0"
   },
   "scripts": {
     "restart": "pm2 startOrRestart ecosystem.config.js",
