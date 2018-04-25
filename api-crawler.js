@@ -12,8 +12,6 @@ const hc = new HashtagCount({
     access_token_secret:  'BFUDFMHhivRZgdrAuiVCzt7Ed5RtttAJvWUsNfnGXQqA6',
 });
 
-StartStreamCapturing();
-
 StartStreamCapturing = function(){
     let hashtags = [];
 
@@ -172,3 +170,5 @@ const GetCoinPrice = function(currencyId){
         });
     });
 };
+
+StartStreamCapturing();
