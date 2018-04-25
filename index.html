@@ -44,17 +44,19 @@
         </ul>
     </div>
 </nav>
-
-<div style="width:75%;margin: 0 auto;">
-    <form action="">
-        <select>
-            <option value="Bitcoin"></option>
-            <option value="Bitcoin-Cash"></option>
-            <option value="Litecoin"></option>
-            <option value="Ethereum"></option>
-            <option value="Ripple"></option>
+<div id="dropdown">
+    <form >
+        <select id = "coins" onChange = "getCoinValue()">
+            <option value="Bitcoin" selected = "selected">Bitcoin</option>
+            <option value="Bitcoin-Cash">Bitcoin-Cash</option>
+            <option value="Litecoin">Litecoin</option>
+            <option value="Ethereum">Ethereum</option>
+            <option value="Cardano">Cardano</option>
         </select>
     </form>
+</div>
+<div style="width:75%;margin: 0 auto;">
+
     <canvas id="myChart"></canvas>
 </div>
 
@@ -121,59 +123,95 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
 <script>
-    var canvas = document.getElementById('myChart');
-    new Chart(canvas, {
-        type: 'line',
-        data: {
-            labels: ['January', 'February', 'March', 'April', 'May',"June","July","August","September","November","December"],
-            datasets: [{
-                label: 'USD-T',
-                borderColor: 'rgb(38, 12, 12)',
-                // backgroundColor: window.chartColors.red,
-                yAxisID: 'left-axis',
-                fill: false,
-                data: [100, 96, 84, 76, 69],
-            }, {
-                label: '# of Tweets',
-                borderColor: 'rgb(77, 174, 206)',
-                // backgroundColor: window.chartColors.blue,
-                fill: false,
-                yAxisID: 'right-axis',
-                data: [0, 1, 0, 1, 0],
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    scaleLabel:{
-                        display: true,
-                        labelString: "USD-T"
-                    },
-                    id: 'left-axis',
-                    type: 'linear',
-                    position: 'left'
-                }, {
-                    scaleLabel:{
-                        display: true,
-                        labelString: "# of Tweets"
-                    },
-                    id: 'right-axis',
-                    type: 'linear',
-                    position: 'right',
-                    ticks: {
-                        max: 1,
-                        min: 0
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel:{
-                        display: true,
-                        labelString: "Months"
-                    }
-                }]
-            }
-        }
+
+
+
+    $( document ).ready(function() {
+        getCoinValue();
+        getDate();
     });
+
+
+    function getCoinValue()
+    {
+        var selection = document.getElementById("coins");
+        var coin = selection.options[selection.selectedIndex].value;
+        console.log(coin);
+        createChart(coin);
+    }
+    function getDate(){
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth()
+        day = 7
+        console.log(day);
+        if(day <= 6){
+            
+        }
+        var dateArray = [];
+        for(var i = 0;i<7;i++) {
+            dateArray.unshift(day - i);
+        }
+
+        return dateArray;
+    }
+
+    function createChart(coin)
+    {
+        var canvas = document.getElementById('myChart');
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: getDate(),
+                datasets: [{
+                    label: 'USDT',
+                    borderColor: 'rgb(38, 12, 12)',
+                    // backgroundColor: window.chartColors.red,
+                    yAxisID: 'left-axis',
+                    fill: false,
+                    data: [100, 96, 84, 76, 69],
+                }, {
+                    label: '# of Tweets',
+                    borderColor: 'rgb(77, 174, 206)',
+                    // backgroundColor: window.chartColors.blue,
+                    fill: false,
+                    yAxisID: 'right-axis',
+                    data: [0, 1, 0, 1, 0],
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "USDT"
+                        },
+                        id: 'left-axis',
+                        type: 'linear',
+                        position: 'left'
+                    }, {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "# of Tweets"
+                        },
+                        id: 'right-axis',
+                        type: 'linear',
+                        position: 'right',
+                        ticks: {
+                            max: 1,
+                            min: 0
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Months"
+                        }
+                    }]
+                }
+            }
+        });
+    }
 </script>
 </body>
 
