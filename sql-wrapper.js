@@ -47,25 +47,29 @@ module.exports.GetAllCurrencies = function() {
  * @param endDate {Date} End of period
  * @returns {Promise.<[day_index]>} Array of day_indexes
  */
-module.exports.GetAllDataBetween = function(startDate, endDate) {
+module.exports.GetAllDataBetween = function(currencyId, startDate, endDate) {
     return new Promise(function(resolve, reject){
         VerifyDate(startDate);
         VerifyDate(endDate);
+        VerifyCurrencyId(currencyId);
 
         const query = {
             sql:
             'SELECT currency_id, DATE_FORMAT(date, \'%m-%d-%Y\') as date, price_us_dollars, ' +
                 'google_activity, twitter_mentions ' +
             'FROM day_index ' +
-            'WHERE date >= ? ' +
-            'AND date <= ?'
+            'WHERE currency_id = ? ' +
+            'AND date >= ? ' +
+            'AND date <= ? '
         };
 
-        pool.query(query, [startDate, endDate], function (err, results){
+        pool.query(query, [currencyId, startDate, endDate], function (err, results){
             if(err)
                 reject(err);
-            else
-                resolve(results);
+            else{
+                json = JSON.stringify(results)
+                resolve(json);
+            }
         });
     });
 };
