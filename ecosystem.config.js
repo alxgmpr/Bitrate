@@ -3,7 +3,7 @@ module.exports = {
         name: 'Bitrate',
         script: './index.js'
     }, {
-        name: 'api-crawler'
+        name: 'api-crawler',
         script:'./api-crawler.js'
     }],
     deploy: {
