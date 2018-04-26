@@ -49,9 +49,13 @@ module.exports.GetAllCurrencies = function() {
  */
 module.exports.GetAllDataBetween = function(currencyId, startDate, endDate) {
     return new Promise(function(resolve, reject){
-        VerifyDate(startDate);
-        VerifyDate(endDate);
-        VerifyCurrencyId(currencyId);
+        try{
+            VerifyDate(startDate)
+            VerifyDate(endDate);
+            VerifyCurrencyId(currencyId);
+        } catch(exception){
+            reject(exception);
+        }
 
         const query = {
             sql:
@@ -94,11 +98,15 @@ module.exports.GetAllDataBetween = function(currencyId, startDate, endDate) {
  */
 module.exports.UpdateData = function(currencyId, date, priceUsDollars, googleActivity, twitterMentions){
     return new Promise(function(resolve, reject) {
-        VerifyCurrencyId(currencyId);
-        VerifyDate(date);
-        VerifyNumber(priceUsDollars,'priceUsDollars');
-        VerifyNumber(googleActivity, 'googleActivity');
-        VerifyNumber(twitterMentions, 'twitterMentions');
+        try{
+            VerifyCurrencyId(currencyId);
+            VerifyDate(date);
+            VerifyNumber(priceUsDollars,'priceUsDollars');
+            VerifyNumber(googleActivity, 'googleActivity');
+            VerifyNumber(twitterMentions, 'twitterMentions');
+        } catch(exception){
+            reject(exception);
+        }
 
         GetCurrency(currencyId)
             .then(
@@ -145,7 +153,12 @@ module.exports.UpdateData = function(currencyId, date, priceUsDollars, googleAct
  */
 const GetCurrency = function(currencyId) {
     return new Promise(function(resolve, reject){
-        VerifyCurrencyId(currencyId);
+        try{
+            VerifyCurrencyId(currencyId);
+        }
+        catch(exception){
+            reject(exception);
+        }
 
         const query = {
             sql:
@@ -173,8 +186,13 @@ const GetCurrency = function(currencyId) {
  */
 const GetDayIndex = function(currencyId, date) {
     return new Promise(function(resolve, reject) {
-        VerifyCurrencyId(currencyId);
-        VerifyDate(date);
+        try{
+            VerifyCurrencyId(currencyId);
+            VerifyDate(date);
+        }
+        catch(exception){
+            reject(exception);
+        }
 
         const query = {
             sql:
@@ -206,11 +224,18 @@ const GetDayIndex = function(currencyId, date) {
  */
 const CreateDayIndex = function(currencyId, date, priceUsDollars, googleActivity, twitterMentions){
     return new Promise(function(resolve, reject) {
-        VerifyCurrencyId(currencyId);
-        VerifyDate(date);
-        VerifyNumber(priceUsDollars,'priceUsDollars');
-        VerifyNumber(googleActivity, 'googleActivity');
-        VerifyNumber(twitterMentions, 'twitterMentions');
+        try{
+            VerifyCurrencyId(currencyId);
+            VerifyDate(date);
+            VerifyNumber(priceUsDollars,'priceUsDollars');
+            VerifyNumber(googleActivity, 'googleActivity');
+            VerifyNumber(twitterMentions, 'twitterMentions');
+        }catch(exception){
+            reject(exception);
+        }
+
+        if(err != null)
+            reject(err);
 
         const query = {
             sql:
@@ -238,11 +263,15 @@ const CreateDayIndex = function(currencyId, date, priceUsDollars, googleActivity
  */
 const UpdateDayIndex = function(currencyId, date, priceUsDollars, googleActivity, twitterMentions){
     return new Promise(function(resolve, reject) {
-        VerifyCurrencyId(currencyId);
-        VerifyDate(date);
-        VerifyNumber(priceUsDollars,'price_us_dollars');
-        VerifyNumber(googleActivity, 'google_searches');
-        VerifyNumber(twitterMentions, 'twitter_mentions');
+        try{
+            VerifyCurrencyId(currencyId);
+            VerifyDate(date);
+            VerifyNumber(priceUsDollars,'price_us_dollars');
+            VerifyNumber(googleActivity, 'google_searches');
+            VerifyNumber(twitterMentions, 'twitter_mentions');
+        }catch(exception){
+            reject(exception);
+        }
 
         const query = {
             sql:
@@ -280,8 +309,10 @@ const VerifyCurrencyId = function (currencyId) {
 const VerifyDate = function (date){
     if(date == null)
         throw 'Parameter date cannot be null';
-    else if(!(date && Object.prototype.toString.call(date) === "[object Date]" && !isNaN(date)))
-        date = new Date(date)
+
+    date = new Date(date)
+    if(date == 'Invalid Date')
+        throw 'Date must be in UTC format';
 
     date.setHours(0, 0, 0, 0);
 };
