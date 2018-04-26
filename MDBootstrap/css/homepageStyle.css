@@ -140,3 +140,14 @@
 .active-cyan .fa, .active-cyan-2 .fa {
     color: #4dd0e1;
 }
+
+#dateWrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.dateStart, .dateEnd {
+    display: inline-block;
+    padding-bottom: 1%;
+    padding-top: 1%;
+}
