@@ -46,28 +46,37 @@
         </ul>
     </div>
 </nav>
-<div id="dropdown">
-    <form >
-        <select id = "coins" onChange = "getCoinValue()">
-            <option value="Bitcoin" selected = "selected">Bitcoin</option>
-            <option value="Bitcoin-Cash">Bitcoin-Cash</option>
-            <option value="Litecoin">Litecoin</option>
-            <option value="Ethereum">Ethereum</option>
-            <option value="Cardano">Cardano</option>
-        </select>
-    </form>
-</div>
-<div style="width:75%;margin: 0 auto;">
+<div id = "charts">
+    <div class = "chartStyle">
 
-    <canvas id="myChart"></canvas>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <div class = "chartStyle">
+
+        <canvas id="myChartGoogle"></canvas>
+    </div>
 </div>
 
 <div id = "dateWrapper">
+
     <div class = "dateStart">
         Start Date: <input id = "datepicker" type = "text" name = "date">
     </div>
     <div class = "dateEnd">
         End Date: <input id = "datepickerLower" type = "text" name = "date">
+    </div>
+
+    <div id="dropdown">
+        <form >
+            <select id = "coins" onChange = "getCoinValue(currentStartDate, currentEndDate)">
+                <option value="BTC" selected = "selected">Bitcoin</option>
+                <option value="BCH">Bitcoin-Cash</option>
+                <option value="LTC">Litecoin</option>
+                <option value="ETH">Ethereum</option>
+                <option value="ADA">Cardano</option>
+            </select>
+        </form>
     </div>
 </div>
 
@@ -137,85 +146,70 @@
 
 
 
-    var currentStartDate = "";
-    var currentEndDate = "";
+    var currentStartDate = "2018-01-01";
+    var currentEndDate = "2018-01-10";
 
     $( document ).ready(function() {
-        getCoinValue();
         $("#datepicker").datepicker({
-            dateFormat: 'dd/mm/yy'}).on("changeDate", function (e) {
-            console.log($(this).val());
+            dateFormat: 'YYYY-MM-DD'}).on("changeDate", function (e) {
             currentStartDate = $(this).val();
+            var split = currentStartDate.split("/");
+            currentStartDate = split[2] + "-" + split[0] + "-" + split[1];
         });
         $("#datepickerLower").datepicker({
-            dateFormat: 'dd/mm/yy'}).on("changeDate", function (e) {
-            console.log($(this).val());
+            dateFormat: 'YYYY-MM-DD'}).on("changeDate", function (e) {
             currentEndDate = $(this).val();
+            var split = currentEndDate.split("/");
+            currentEndDate = split[2] + "-" + split[0] + "-" + split[1];
             if(currentStartDate != "") {
-                getAjax('http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/get_data_between?startDate=2018-01-01&endDate=2018-03-01&currencyId=BTC', function(data){
-                    var json = JSON.parse(data);
-                    console.log(json);
-                });
+                getCoinValue(currentStartDate, currentEndDate);
             }
         });
+
+        getCoinValue(currentStartDate, currentEndDate);
     });
 
-    function getAjax(url, success) {
-        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        xhr.open('GET', url);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
-        };
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.send();
-        return xhr;
-    }
-
-    function getCoinValue()
+    function getCoinValue(startDate, endDate)
     {
         var selection = document.getElementById("coins");
         var coin = selection.options[selection.selectedIndex].value;
         console.log(coin);
-        createChart(coin);
+        getDateValue(coin, startDate, endDate);
     }
-    function getDateValue(){
-        var date = new Date();
-        var day = date.getDate();
-        var month = date.getMonth();
-        day = 7;
-        console.log(day);
-        if(day <= 6){
-            
-        }
-        var dateArray = [];
-        for(var i = 0;i<7;i++) {
-            dateArray.unshift(day - i);
-        }
-
-        return dateArray;
+    function getDateValue(currencyId, startDate, endDate){
+        $.get("get_data_between", {startDate: startDate, endDate: endDate, currencyId: currencyId } )
+            .done(function(data) {
+                var object = JSON.parse(data);
+                var dates = object.map(x => x.date);
+                var usd = object.map(x => x.price_us_dollars);
+                var tweets = object.map(x => x.twitter_mentions);
+                var googleRatings = object.map(x => x.google_activity);
+                createChart(currencyId, dates, usd, tweets);
+                createChartGoogle(currencyId, dates, usd, googleRatings);
+            });
     }
 
-    function createChart(coin)
+    function createChart(coin, dates, usd, tweets)
     {
         var canvas = document.getElementById('myChart');
         new Chart(canvas, {
             type: 'line',
             data: {
-                labels: getDateValue(),
+                labels: dates,
                 datasets: [{
                     label: 'USDT',
                     borderColor: 'rgb(38, 12, 12)',
                     // backgroundColor: window.chartColors.red,
                     yAxisID: 'left-axis',
                     fill: false,
-                    data: [100, 96, 84, 76, 69],
+                    data: usd,
                 }, {
                     label: '# of Tweets',
                     borderColor: 'rgb(77, 174, 206)',
                     // backgroundColor: window.chartColors.blue,
                     fill: false,
                     yAxisID: 'right-axis',
-                    data: [0, 1, 0, 1, 0],
+                    data: tweets,
                 }]
             },
             options: {
@@ -235,16 +229,65 @@
                         },
                         id: 'right-axis',
                         type: 'linear',
-                        position: 'right',
-                        ticks: {
-                            max: 1,
-                            min: 0
-                        }
+                        position: 'right'
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: "Months"
+                            labelString: "Dates"
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function createChartGoogle(coin, dates, usd, googleRating)
+    {
+        var canvas = document.getElementById('myChartGoogle');
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: 'USDT',
+                    borderColor: 'rgb(38, 12, 12)',
+                    // backgroundColor: window.chartColors.red,
+                    yAxisID: 'left-axis',
+                    fill: false,
+                    data: usd,
+                }, {
+                    label: 'Google Rating',
+                    borderColor: 'rgb(17, 111, 17)',
+                    // backgroundColor: window.chartColors.blue,
+                    fill: false,
+                    yAxisID: 'right-axis',
+                    data: googleRating,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "USDT"
+                        },
+                        id: 'left-axis',
+                        type: 'linear',
+                        position: 'left'
+                    }, {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Google Rating"
+                        },
+                        id: 'right-axis',
+                        type: 'linear',
+                        position: 'right'
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Dates"
                         }
                     }]
                 }
