@@ -1,7 +1,15 @@
 const express = require('express');
 const apiCrawler = require('./api-crawler.js');
 const sqlWrapper = require('./sql-wrapper.js');
+const path = require('path');
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist/')));
+app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-datepicker/dist/')));
+app.use(express.static(path.join(__dirname, 'node_modules/mdbootstrap/css/')));
+app.use(express.static(path.join(__dirname, 'node_modules/mdbootstrap/js/')));
+app.use(express.static(path.join(__dirname, 'node_modules/mdbootstrap/img/')));
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');

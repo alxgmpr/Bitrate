@@ -10,14 +10,13 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
-    <link href="MDBootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
-    <link href="MDBootstrap/css/mdb.min.css" rel="stylesheet">
+    <link href="/mdb.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
-    <link href="MDBootstrap/css/style.css" rel="stylesheet">
-    <link href="MDBootstrap/css/homepageStyle.css" rel="stylesheet">
-    <link href="datepicker/css/datepicker.css" rel = "stylesheet">
-    <link href="Bootstrap/css/bootstrap.css" rel = "stylesheet">
+    <link href="/style.css" rel="stylesheet">
+    <link href="/homepageStyle.css" rel="stylesheet">
+    <link href="/css/bootstrap-datepicker.css" rel = "stylesheet">
 
     <style>
         canvas {
@@ -33,7 +32,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark myBlue">
     <a class="navbar-brand" href="#">
-        <img src="MDBootstrap/img/luxury.png" height="30" class="d-inline-block align-top" alt="">
+        <img src="luxury.png" height="30" class="d-inline-block align-top" alt="">
         BitRate</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -81,7 +80,7 @@
             <p>In malesuada diam sem, nec dictum nisi molestie nec. Pellentesque maximus bibendum nunc, ut aliquet erat congue sed. Proin id tincidunt neque. Nam porttitor ipsum ante, eu scelerisque libero sodales vitae. Donec convallis vestibulum dui. Quisque convallis efficitur nisi ut tincidunt. Aenean lobortis eu ipsum ut venenatis.</p>
         </div>
         <div id = "imageBlock">
-            <img id = "imageProps" src = "MDBootstrap/img/luxury.png">
+            <img id = "imageProps" src = "luxury.png">
         </div>
         <div id = "footer">
             <div id = "footerContentWrapper">
@@ -124,17 +123,16 @@
 </div>
 <!-- SCRIPTS -->
 <!-- JQuery -->
-<script type="text/javascript" src="MDBootstrap/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/jquery-3.2.1.min.js"></script>
 <!-- Bootstrap tooltips -->
-<script type="text/javascript" src="MDBootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="MDBootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/bootstrap.js"></script>
 <!-- MDB core JavaScript -->
-<script type="text/javascript" src="MDBootstrap/js/mdb.min.js"></script>
+<script type="text/javascript" src="/mdb.js"></script>
 <script type = "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-<script type="text/javascript" src="Bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 <script>
 
 
@@ -160,8 +158,8 @@
     function getDateValue(){
         var date = new Date();
         var day = date.getDate();
-        var month = date.getMonth()
-        day = 7
+        var month = date.getMonth();
+        day = 7;
         console.log(day);
         if(day <= 6){
             
