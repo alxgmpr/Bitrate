@@ -64,11 +64,11 @@
 
 <div id = "dateWrapper">
     <div class = "dateStart">
-        Start Date: <input class = "datepicker" type = "text" name = "date">
+        Start Date: <input id = "datepicker" type = "text" name = "date">
     </div>
-    <!--<div class = "dateEnd">
-        End Date: <input class = "datepicker" type = "text" name = "date">
-    </div>-->
+    <div class = "dateEnd">
+        End Date: <input id = "datepickerLower" type = "text" name = "date">
+    </div>
 </div>
 
 <div id = "mainBlock">
@@ -137,16 +137,39 @@
 
 
 
+    var currentStartDate = "";
+    var currentEndDate = "";
+
     $( document ).ready(function() {
         getCoinValue();
+        $("#datepicker").datepicker({
+            dateFormat: 'dd/mm/yy'}).on("changeDate", function (e) {
+            console.log($(this).val());
+            currentStartDate = $(this).val();
+        });
+        $("#datepickerLower").datepicker({
+            dateFormat: 'dd/mm/yy'}).on("changeDate", function (e) {
+            console.log($(this).val());
+            currentEndDate = $(this).val();
+            if(currentStartDate != "") {
+                getAjax('http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/get_data_between?startDate=2018-01-01&endDate=2018-03-01&currencyId=BTC', function(data){
+                    var json = JSON.parse(data);
+                    console.log(json);
+                });
+            }
+        });
     });
 
-    $(function() {
-        console.log("HERE");
-        $(".datepicker").datepicker();
-        //console.log($(".datepicker").datepicker("getDate"));
-
-    });
+    function getAjax(url, success) {
+        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        xhr.open('GET', url);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+        };
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send();
+        return xhr;
+    }
 
     function getCoinValue()
     {
