@@ -3,14 +3,17 @@ Rapidly compare cryptocurrency price action with social media and search trends
 
 [Link to Website](http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/)
 
-## Kanban Board
+### Kanban Board
 [Trello](https://trello.com/b/8QUr7G4v/bitrate)
 
-## Team Members
+### Video Demonstration
+[Video](https://www.youtube.com/watch?v=BvnI6ssrA6I)
+
+### Team Members
 Grant Maloney, Nathan Ortbals, Alex Gompper, Jonathan Yee, Akrum Mahmud
 
 
-## SQL Schema
+### SQL Schema
 
 ```
 CREATE DATABASE  IF NOT EXISTS `bitrate` /*!40100 DEFAULT CHARACTER SET latin1 */;
@@ -71,7 +74,7 @@ CREATE TABLE `day_index` (
 ```
 
 
-## Data Architecture
+### Data Architecture
 
 Because twitter does not allow access to tweets older than a week, we built a scrapper to collect tweet counts and store them in a database.
 We decided to also collect the cryptocurrency prices and google search trends for that day at the same time, to minimize our API calls and allow faster
@@ -79,7 +82,7 @@ data retrieval. This scraper runs every day, retrieves the data, and stores a re
 
 We made use of the tweet-count package hosted on NPM for speed of developement. This package opens an api-stream to twitter and intercepts all tweets that make use of the specified hashtages (in this case, cryptocurrency symbols). After collecting tweets for a day, it fires an event in order to store the count.
 
-## Running and PM2
+### Running and PM2
 
 The application is designed in 2 parts:
 
