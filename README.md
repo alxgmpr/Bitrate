@@ -101,3 +101,4 @@ The Express server has 2 main routes:
 1) `'/'` to serve the homepage, index.html
 2) `'/get_data_between'` to serve data from our SQL database to the AJAX calls from the homepage.
 
+We utilized MDBootstrap, which allowed us to create a simplistic style website with minimal HTML code. With this we were able to create clean navigation bars, footers and overall a responsive web design. We also used chart.js to create a clean representation of the requested data from our date pickers.
