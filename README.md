@@ -3,10 +3,10 @@ Rapidly compare cryptocurrency price action with social media and search trends
 
 [Link to Website](http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/)
 
-# Kanban Board
+## Kanban Board
 [Trello](https://trello.com/b/8QUr7G4v/bitrate)
 
-# Team Members
+## Team Members
 Grant Maloney, Nathan Ortbals, Alex Gompper, Jonathan Yee, Akrum Mahmud
 
 
@@ -78,3 +78,23 @@ We decided to also collect the cryptocurrency prices and google search trends fo
 data retrieval. This scraper runs every day, retrieves the data, and stores a record for that day in the database.
 
 We made use of the tweet-count package hosted on NPM for speed of developement. This package opens an api-stream to twitter and intercepts all tweets that make use of the specified hashtages (in this case, cryptocurrency symbols). After collecting tweets for a day, it fires an event in order to store the count.
+
+## Running and PM2
+
+The application is designed in 2 parts:
+
+1) The Express server ('Bitrate') which handles requests to view the homepage as well as GET calls to our local API.
+
+2) The api-crawler module which chronically scrapes Google search trends, Twitter hashtag trends, and Bittrex cryptocurrency price action.
+
+Rather than manually calling `node index.js` and `node api-crawler.js` constantly to run the app, our group opted to use PM2, a management solution to handle starting/stopping, as well as pulling updates from the Github repository.
+
+## Front End
+
+The service for the application's front end is handled using Express, which allows us to handle web requests through an open port (usually :3000). By using the router functionality of Express, we can write specific and/or dynamic handlers for different requests to the server.
+
+The Express server has 2 main routes:
+
+1) `'/'` to serve the homepage, index.html
+2) `'/get_data_between'` to serve data from our SQL database to the AJAX calls from the homepage.
+
