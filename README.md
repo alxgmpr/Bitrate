@@ -1,6 +1,8 @@
 # Bitrate
 Rapidly compare cryptocurrency price action with social media and search trends
 
+[Link to Website](http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/)
+
 # Team Members
 * Grant Maloney
 * Nathan Ortbals
