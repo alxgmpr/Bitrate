@@ -3,12 +3,12 @@ Rapidly compare cryptocurrency price action with social media and search trends
 
 [Link to Website](http://ec2-54-91-150-70.compute-1.amazonaws.com:3000/)
 
+# Kanban Board
+[Trello](https://trello.com/b/8QUr7G4v/bitrate)
+
 # Team Members
-* Grant Maloney
-* Nathan Ortbals
-* Alex Gompper
-* Jonathan Yee
-* Akrum Mahmud
+Grant Maloney, Nathan Ortbals, Alex Gompper, Jonathan Yee, Akrum Mahmud
+
 
 ## SQL Schema
 
