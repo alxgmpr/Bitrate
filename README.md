@@ -1,7 +1,7 @@
 # Bitrate
 Rapidly compare cryptocurrency price action with social media and search trends
 
-#Team Members
+# Team Members
 Grant Maloney
 Nathan Ortbals
 Alex Gompper
