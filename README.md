@@ -2,11 +2,11 @@
 Rapidly compare cryptocurrency price action with social media and search trends
 
 # Team Members
-Grant Maloney
-Nathan Ortbals
-Alex Gompper
-Jonathan Yee
-Akrum Mahmud
+* Grant Maloney
+* Nathan Ortbals
+* Alex Gompper
+* Jonathan Yee
+* Akrum Mahmud
 
 ## SQL Schema
 
